@@ -1,0 +1,142 @@
+<page-header title='' home_link='/index'></page-header>
+<nz-card [nzBordered]="true">
+  <!-- <sf mode="search" [schema]="srcschema" [formData]="srcparams" (formSubmit)="doSearch()" (formReset)="doReset()"></sf> -->
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="doSearch()">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8" class="mb-md">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="name">{{'common.project-name'|translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <nz-select [(ngModel)]="q.name" name="name" (ngModelChange)="getVersion($event)" nzAllowClear nzId="name" [nzPlaceHolder]="'project-manage.projects.select-the-project-name'|translate" [nzShowSearch]="true">
+              <nz-option *ngFor="let option of projectnameSlt" [nzLabel]="option.label" [nzValue]="option.value">
+              </nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="version">{{'common.version-number'|translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <nz-select nzAllowClear name="version" nzId="version" [nzPlaceHolder]="'project-manage.projects.select-the-version-number-first'|translate" [(ngModel)]="q.version" nzShowSearch>
+              <nz-option *ngFor="let option of versionSlt" [nzLabel]="option.label" [nzValue]="option.value">
+              </nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="operate_time">{{'common.operating-time'|translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <nz-range-picker [(ngModel)]="q.operate_time" name="operate_time" nzShowTime></nz-range-picker>
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="description">{{'common.describe'|translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <input nz-input [(ngModel)]="q.description" name="description" placeholder="{{'tip.please-enter-description' |translate}}" nzId="description">
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="expandForm ? 24 : 8" class="mb-md" [class.text-right]="expandForm">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="searchloading">{{'btn.query'| translate}}</button>
+        <button nz-button type="reset" (click)="doReset()" class="mx-sm">{{'btn.reset'| translate}}</button>
+        <a (click)="expandForm=!expandForm">
+          {{expandForm ? ('btn.packup'| translate):('btn.unfold'| translate)}}
+          <i class="anticon" [class.anticon-down]="!expandForm" [class.anticon-up]="expandForm"></i>
+        </a>
+      </div>
+    </div>
+  </form>
+</nz-card>
+<nz-card [nzBordered]="true">
+  <div class="mb-md">
+    <button nz-button (click)="befAdd()" [nzType]="'primary'">
+      <i class="anticon anticon-plus"></i>
+      <span>{{'btn.add'| translate}}</span>
+    </button>
+  </div>
+  <nz-table #nzTable [nzData]="tableData" [nzPageSize]="10" nzShowSizeChanger nzShowQuickJumper [nzShowTotal]='tblTotal'>
+    <thead nz-thead>
+      <tr>
+        <th nzShowSort (nzSortChange)="sort('name',$event)">
+          {{'common.project-name'|translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('version',$event)" nzWidth="300px">
+          {{'common.version-number'|translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('operate_time',$event)">
+          {{'common.operating-time'|translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('description',$event)" nzWidth="100px">
+          {{'common.describe'|translate}}
+        </th>
+        <th>
+          <span>{{'btn.operation'| translate}}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+        <td>
+          {{data.name}}
+        </td>
+        <td>
+          {{data.version}}
+        </td>
+        <td>
+          {{data.operate_time}}
+        </td>
+        <td>{{data.description}}</td>
+        <td>
+          <span>
+            <a href="javascript:;" (click)="befEdit(data)">{{'btn.editor'| translate}}</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-popconfirm [nzTitle]="'tip.ok-delete'| translate" [nzOkText]="'btn.confirm' | translate" [nzCancelText]="'btn.cancel' | translate" (nzOnConfirm)="del(data.name)">
+              <a nz-popconfirm>{{'btn.delete'| translate}}</a>
+            </nz-popconfirm>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #tblTotal>{{'common.total'| translate}} {{tbltotal}} {{'common.article'| translate}}</ng-template>
+</nz-card>
+<nz-modal [nzVisible]="modalVisible" [nzTitle]="addOrUpldTitle" [nzOkLoading]="loading" [nzContent]="modalContent" (nzOnCancel)="modalVisible=false" (nzOnOk)="addOrUpl()">
+  <ng-template #modalContent>
+    <!-- <sf mode="edit" [schema]="modschema" [formData]="modparams" (formSubmit)="addOrUpl()" (formReset)="doReset()"></sf> -->
+    <form nz-form [formGroup]="formGroup">
+      <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="name"> {{'common.project-name'|translate}}</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+          <input nz-input formControlName="name" [readonly]="isFormDisabled" placeholder="{{'tip.please-enter-a-project-name'|translate}}" nzId="name">
+          <nz-form-explain *ngIf="(formGroup.get('name').dirty || formGroup.get('name').touched) && formGroup.get('name').errors">{{'tip.please-enter-a-project-name'|translate}}！</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="ajaxType==='post'">
+        <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="version">{{'common.version-number'|translate}}</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+          <input nz-input [readonly]="isFormDisabled" formControlName="version" placeholder="{{'tip.please-enter-the-version-number'|translate}}" nzId="version">
+          <nz-form-explain *ngIf="(formGroup.get('version').dirty || formGroup.get('version').touched) && formGroup.get('version').errors">{{'tip.please-enter-the-version-number'|translate}}！</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzXs="24" nzSm="7"> {{'common.describe'|translate}}</nz-form-label>
+        <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+          <input nz-input formControlName="description" placeholder="{{'tip.please-enter-description' |translate}}" nzId="description">
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
+</nz-modal>

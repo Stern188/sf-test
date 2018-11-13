@@ -1,0 +1,120 @@
+<!-- <pro-header>
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb-item>
+                <a [routerLink]="['/task-list']">通知</a>
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </ng-template>
+</pro-header>
+
+<nz-card [nzBordered]="true">
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="doSearch()">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8" class="mb-md">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label nz-col [nzSpan]="8">
+                        <label for="rname">真实姓名</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-input [(ngModel)]="q.rname" name="rname" [nzSize]="'large'" [nzPlaceHolder]="'请选择真实姓名'" nzId="rname"></nz-input>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="8" class="mb-md">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label nz-col [nzSpan]="8">
+                        <label for="uname">用户名</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-input [(ngModel)]="q.uname" name="uname" [nzSize]="'large'" [nzPlaceHolder]="'请输入用户名'" nzId="version"></nz-input>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label nz-col [nzSpan]="8">
+                        <label for="operate_time">操作时间</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-rangepicker [(ngModel)]="q.operate_time" name="operate_time" [nzSize]="'large'" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-rangepicker>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label nz-col [nzSpan]="8">
+                        <label for="description">描述</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-input [(ngModel)]="q.description" name="description" [nzSize]="'large'" [nzPlaceHolder]="'请输入描述'" nzId="description"></nz-input>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="expandForm ? 24 : 8" class="mb-md" [class.text-right]="expandForm">
+                <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="searchloading" [nzSize]="'large'">查询</button>
+                <button nz-button type="reset" (click)="doReset()" [nzSize]="'large'" class="mx-sm">重置</button>
+                <a (click)="expandForm=!expandForm">
+                    {{expandForm ? '收起' : '展开'}}
+                    <i class="anticon" [class.anticon-down]="!expandForm" [class.anticon-up]="expandForm"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</nz-card>
+<nz-card [nzBordered]="true">
+    <div class="mb-md">
+        <button nz-button (click)="befAdd()" [nzType]="'primary'" [nzSize]="'large'">
+            <i class="anticon anticon-plus"></i>
+            <span>添加</span>
+        </button>
+    </div>
+    <nz-table #nzTable [nzDataSource]="tableData" [nzPageSize]="10" nzShowSizeChanger nzShowQuickJumper nzShowTotal>
+        <thead nz-thead>
+            <tr>
+                <th nz-th>
+                    <span>项目名称</span>
+                    <nz-table-sort (nzValueChange)="sort('name',$event)"></nz-table-sort>
+                </th>
+                <th nz-th>
+                    <span>版本号</span>
+                    <nz-table-sort (nzValueChange)="sort('version',$event)"></nz-table-sort>
+                </th>
+                <th nz-th>
+                    <span>操作时间</span>
+                    <nz-table-sort (nzValueChange)="sort('operate_time',$event)"></nz-table-sort>
+                </th>
+                <th nz-th>
+                    <span>描述</span>
+                    <nz-table-sort (nzValueChange)="sort('description',$event)"></nz-table-sort>
+                </th>
+                <th nz-th>
+                    <span>操作</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                <td nz-td>
+                    {{data.name}}
+                </td>
+                <td nz-td>
+                    {{data.version}}
+                </td>
+                <td nz-td>
+                    {{data.operate_time}}
+                </td>
+                <td nz-td>{{data.description}}</td>
+                <td nz-td>
+                    <span>
+                        <a href="javascript:;" (click)="befEdit(data)">编辑</a>
+                        <span nz-table-divider></span>
+                        <nz-popconfirm [nzTitle]="'确定删除？'" [nzOkText]="'确定'" [nzCancelText]="'取消'" (nzOnConfirm)="del(data.name)">
+                            <a nz-popconfirm>删除</a>
+                        </nz-popconfirm>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card> -->

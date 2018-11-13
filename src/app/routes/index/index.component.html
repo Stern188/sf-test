@@ -1,0 +1,584 @@
+<page-header title='' home_link='/index'>
+
+    <nz-tabset>
+        <nz-tab nzTitle="自测结果" (nzClick)="getData(1)">
+            <nz-card [nzBordered]="true">
+                <form nz-form [nzLayout]="'inline'" (ngSubmit)="doSearch(1)">
+                    <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="8" class="mb-md">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="uname">负责人</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.uname" [nzFilterOption]="unameSrc" name="uname" nzAllowClear nzId="uname" [nzPlaceHolder]="'请选择负责人'" [nzShowSearch]="true">
+                                        <nz-option nzCustomContent *ngFor="let i of unameSlt" [nzLabel]="i.label" [nzValue]="i.value">
+                                            <b style="font-size: 17px;">{{i.label}}</b> {{i.value}}
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div nz-col [nzSpan]="8" class="mb-md">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="name">项目名称</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.name" name="name" (ngModelChange)="getVersion($event,1)" nzAllowClear nzId="name" [nzPlaceHolder]="'请选项目名称'" [nzShowSearch]="true">
+                                        <nz-option *ngFor="let option of projectnameSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="version">版本号</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select nzAllowClear name="version" nzId="version" [nzPlaceHolder]="'请先选择版本号'" [(ngModel)]="q.version" nzShowSearch>
+                                        <nz-option *ngFor="let option of versionSlt1" [nzLabel]="option.label" [nzValue]="option.value">
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="parent_module">父模块</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <input nz-input [(ngModel)]="q.parent_module" name="parent_module" placeholder="请输入父模块" nzId="parent_module">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="submodule">子模块</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <input nz-input [(ngModel)]="q.submodule" name="submodule" placeholder="请输入子模块" nzId="submodule">
+                                </div>
+                            </div>
+                        </div>
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="status">状态</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.status" nzAllowClear name="status" nzId="status" [nzPlaceHolder]="'请选择状态'" [nzShowSearch]="true">
+                                        <nz-option *ngFor="let i of statusSlt" [nzLabel]="i.label" [nzValue]="i.value"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="operate_time_test">操作时间</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-range-picker [(ngModel)]="q.operate_time_test" name="operate_time_test" nzShowTime></nz-range-picker>
+                                </div>
+                            </div>
+                        </div>
+                        <div nz-col [nzSpan]="expandForm ? 24 : 8" class="mb-md" [class.text-right]="expandForm">
+                            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="searchloading">查询</button>
+                            <button nz-button type="reset" (click)="doReset()" class="mx-sm">重置</button>
+                            <a (click)="expandForm=!expandForm">
+                                {{expandForm ? '收起' : '展开'}}
+                                <i class="anticon" [class.anticon-down]="!expandForm" [class.anticon-up]="expandForm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </nz-card>
+            <nz-card [nzBordered]="true">
+                <div class="mb-md">
+                    <button nz-button (click)="befAdd()" [acl]="[ 2,3 ]" [nzType]="'primary'">
+                        <i class="anticon anticon-plus"></i>
+                        <span>添加模块</span>
+                    </button>
+                    <button nz-button (click)="download(1)" [acl]="[ 1,3 ]" [nzType]="'primary'">
+                        <i class="anticon anticon-download"></i>
+                        <span>导出到Excel</span>
+                    </button>
+                </div>
+                <nz-table #nzTable1 [nzData]="tableData1" [nzLoading]="tblloading" [nzPageSize]="10" [nzScroll]="{ x:'1400px' }" nzShowSizeChanger nzShowQuickJumper [nzShowTotal]='tblTotal1'>
+                    <thead nz-thead>
+                        <tr>
+                            <th nzShowSort (nzSortChange)="sort('uname',$event)" nzWidth="80px" nzLeft="0px">
+                                负责人
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('name',$event)" nzWidth="80px" nzLeft="100px">
+                                项目名称
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('version',$event)" nzWidth="80px">
+                                版本号
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('parent_module',$event)" nzWidth="80px">
+                                父模块
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('submodule',$event)" nzWidth="80px">
+                                子模块
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('status',$event)" nzWidth="80px">
+                                状态
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('memo',$event)" nzWidth="120px">
+                                备注
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('operate_time_test',$event)" nzWidth="120px">
+                                操作时间
+                            </th>
+                            <th [acl]="[ 2,3 ]" nzWidth="100px" nzRight="0px">
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable1.data">
+                            <td nzLeft="0px">
+                                <b>{{data.rname}}</b>{{data.uname}}</td>
+                            <td nzLeft="100px">{{data.name}}</td>
+                            <td>{{data.version}}</td>
+                            <td>{{data.parent_module}}</td>
+                            <td>{{data.submodule}}</td>
+                            <td>{{data.status==="1"?"通过":data.status==="2"?"部分通过":data.status==="3"?"不通过":"待测"}}</td>
+                            <td>{{data.memo}}</td>
+                            <td>{{data.operate_time_test}}</td>
+                            <td *ngIf="localUname === data.uname" [acl]="[ 2,3 ]" nzRight="0px">
+                                <span>
+                  <!-- <span *ngIf="data.uname===uname"> -->
+                                    <a href="javascript:;" (click)="befEdit(data,0)">编辑</a>
+                                <!-- <nz-divider nzType="vertical"></nz-divider> -->
+                                <!--  <nz-popconfirm [nzTitle]="'确定删除？'" [nzOkText]="'确定'" [nzCancelText]="'取消'" (nzOnConfirm)="del(data.id)">
+                                                        <a nz-popconfirm>删除</a>
+                                                    </nz-popconfirm> -->
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <ng-template #tblTotal1>共 {{tbltotal1}} 条</ng-template>
+            </nz-card>
+        </nz-tab>
+
+        <!-- 评估页面 -->
+        <nz-tab nzTitle="评估结果" (nzClick)="getData(2)">
+            <nz-card [nzBordered]="true">
+                <form nz-form [nzLayout]="'inline'" (ngSubmit)="doSearch(2)">
+                    <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="8" class="mb-md">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="uname">负责人</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.uname" name="uname" [nzFilterOption]="unameSrc" nzAllowClear nzId="uname" [nzPlaceHolder]="'请选择负责人'" [nzShowSearch]="true">
+                                        <nz-option nzCustomContent *ngFor="let i of unameSlt" [nzLabel]="i.label" [nzValue]="i.value">
+                                            <b style="font-size: 17px;">{{i.label}}</b> {{i.value}}
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div nz-col [nzSpan]="8" class="mb-md">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="name">项目名称</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.name" name="name" nzAllowClear nzId="name" [nzPlaceHolder]="'请选项目名称'" [nzShowSearch]="true">
+                                        <nz-option *ngFor="let option of projectnameSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="version">版本号</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <input nz-input [(ngModel)]="q.version" name="version" placeholder="请输入版本号" nzId="version">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="parent_module">父模块</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <input nz-input [(ngModel)]="q.parent_module" name="parent_module" placeholder="请输入父模块" nzId="parent_module">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="submodule">子模块</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <input nz-input [(ngModel)]="q.submodule" name="submodule" placeholder="请输入子模块" nzId="submodule">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="status">状态</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.status" nzAllowClear name="status" nzId="status" [nzPlaceHolder]="'请选择状态'" [nzShowSearch]="true">
+                                        <nz-option *ngFor="let i of statusSlt" [nzLabel]="i.label" [nzValue]="i.value"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="operate_time_admin">操作时间</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-range-picker [(ngModel)]="q.operate_time_admin" name="operate_time_admin" nzShowTime></nz-range-picker>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="expandForm ? 24 : 8" class="mb-md" [class.text-right]="expandForm">
+                            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="searchloading">查询</button>
+                            <button nz-button type="reset" (click)="doReset()" class="mx-sm">重置</button>
+                            <a (click)="expandForm=!expandForm">
+                                {{expandForm ? '收起' : '展开'}}
+                                <i class="anticon" [class.anticon-down]="!expandForm" [class.anticon-up]="expandForm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </nz-card>
+            <nz-card [nzBordered]="true">
+                <div class="mb-md">
+                    <!--  <button nz-button (click)="befAdd()" [acl]="2" [nzType]="'primary'">
+                                    <i class="anticon anticon-plus"></i>
+                                    <span>添加</span>
+                                </button> -->
+                    <button nz-button (click)="download(2)" [acl]="[ 1,3 ]" [nzType]="'primary'">
+                        <i class="anticon anticon-download"></i>
+                        <span>导出到Excel</span>
+                    </button>
+                </div>
+                <nz-table #nzTable [nzData]="tableData" [nzLoading]="tblloading" [nzPageSize]="10" [nzScroll]="{ x:'1400px' }" nzShowSizeChanger nzShowQuickJumper [nzShowTotal]='tblTotal'>
+                    <thead nz-thead>
+                        <tr>
+                            <th nzShowSort (nzSortChange)="sort('uname',$event)" nzWidth="80px" nzLeft="0px">
+                                负责人
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('name',$event)" nzWidth="80px" nzLeft="100px">
+                                项目名称
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('version',$event)" nzWidth="80px">
+                                版本号
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('parent_module',$event)" nzWidth="80px">
+                                父模块
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('submodule',$event)" nzWidth="80px">
+                                子模块
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('status',$event)" nzWidth="80px">
+                                自测状态
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('assess',$event)" nzWidth="80px">
+                                评估
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('problems',$event)" nzWidth="120px">
+                                存在问题
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('operate_time_admin',$event)" nzWidth="120px">
+                                操作时间
+                            </th>
+                            <th [acl]="[ 1,3,4 ]" nzWidth="80px" nzRight="0px">
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                            <td nzLeft="0px">
+                                <b>{{data.rname}}</b>{{data.uname}}</td>
+                            <td nzLeft="100px">{{data.name}}</td>
+                            <td>{{data.version}}</td>
+                            <td>{{data.parent_module}}</td>
+                            <td>{{data.submodule}}</td>
+                            <td>{{data.status==="1"?"通过":data.status==="2"?"部分通过":data.status==="3"?"不通过":"待测"}}</td>
+                            <td>{{data.assess==="1"?"通过":data.assess==="2"?"部分通过":data.assess==="3"?"不通过":"待测"}}</td>
+                            <td>{{data.problems}}</td>
+                            <td>
+                                {{data.operate_time_admin}}
+                            </td>
+                            <td [acl]="[ 1,3,4 ]" nzRight="0px">
+                                <span>
+                  <!-- <span *ngIf="data.uname===uname"> -->
+                                <a href="javascript:;" (click)="befEdit(data,1)">编辑</a>
+                                <!-- <nz-divider nzType="vertical"></nz-divider> -->
+                                <!--  <nz-popconfirm [nzTitle]="'确定删除？'" [nzOkText]="'确定'" [nzCancelText]="'取消'" (nzOnConfirm)="del(data.id)">
+                                                                    <a nz-popconfirm>删除</a>
+                                                                </nz-popconfirm> -->
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <ng-template #tblTotal>共 {{tbltotal}} 条</ng-template>
+            </nz-card>
+        </nz-tab>
+
+        <!-- 成功自测率 -->
+        <nz-tab nzTitle="成功自测率" (nzClick)="getData(3)">
+            <nz-card [nzBordered]="true">
+                <form nz-form [nzLayout]="'inline'" (ngSubmit)="doSearch(3)">
+                    <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="8" class="mb-md">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="uname">负责人</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.uname" name="uname" [nzFilterOption]="unameSrc" nzAllowClear nzId="uname" [nzPlaceHolder]="'请选择负责人'" [nzShowSearch]="true">
+                                        <nz-option nzCustomContent *ngFor="let i of unameSlt" [nzLabel]="i.label" [nzValue]="i.value">
+                                            <b style="font-size: 17px;">{{i.label}}</b> {{i.value}}
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div nz-col [nzSpan]="8" class="mb-md">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="name">项目名称</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <nz-select [(ngModel)]="q.name" name="name" nzAllowClear nzId="name" [nzPlaceHolder]="'请选项目名称'" [nzShowSearch]="true">
+                                        <nz-option *ngFor="let option of projectnameSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                                        </nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+                            <div nz-form-item class="d-flex">
+                                <div nz-form-label nz-col [nzSpan]="8">
+                                    <label for="version">版本号</label>
+                                </div>
+                                <div nz-form-control class="flex-1">
+                                    <input nz-input [(ngModel)]="q.version" name="version" placeholder="请输入版本号" nzId="version">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div nz-col [nzSpan]="expandForm ? 24 : 8" class="mb-md" [class.text-right]="expandForm">
+                            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="searchloading">查询</button>
+                            <button nz-button type="reset" (click)="doReset()" class="mx-sm">重置</button>
+                            <a (click)="expandForm=!expandForm">
+                                {{expandForm ? '收起' : '展开'}}
+                                <i class="anticon" [class.anticon-down]="!expandForm" [class.anticon-up]="expandForm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </nz-card>
+            <nz-card [nzBordered]="true">
+                <div class="mb-md">
+                    <button nz-button (click)="download(3)" [acl]="[ 1,3 ]" [nzType]="'primary'">
+                        <i class="anticon anticon-download"></i>
+                        <span>导出到Excel</span>
+                    </button>
+                </div>
+                <nz-table #nzTable3 [nzData]="tableData3" [nzLoading]="tblloading" [nzPageSize]="10" [nzScroll]="{ x:'1400px' }" nzShowSizeChanger nzShowQuickJumper [nzShowTotal]='tblTotal3'>
+                    <thead nz-thead>
+                        <tr>
+                            <th nzShowSort (nzSortChange)="sort('uname',$event)" nzWidth="80px" nzLeft="0px">
+                                负责人
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('name',$event)" nzWidth="80px" nzLeft="100px">
+                                项目名称
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('version',$event)" nzWidth="80px">
+                                版本号
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('resultrate',$event)" nzWidth="150px">
+                                负责模块
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('successrate',$event)" nzWidth="80px">
+                                成功自测率
+                            </th>
+                            <th nzShowSort (nzSortChange)="sort('completionrate',$event)" nzWidth="80px">
+                                完成率
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable3.data">
+                            <td nzLeft="0px">
+                                <b>{{data.rname}}</b>{{data.uname}}</td>
+                            <td nzLeft="100px">{{data.name}}</td>
+                            <td>{{data.version}}</td>
+                            <td>{{data.resultrate}}</td>
+                            <td>{{data.successrate}}</td>
+                            <td>{{data.completionrate}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <ng-template #tblTotal3>共 {{tbltotal3}} 条</ng-template>
+            </nz-card>
+        </nz-tab>
+
+    </nz-tabset>`
+
+
+
+    <!-- 自测记录modal -->
+    <nz-modal [nzVisible]="modalVisible" [nzOkLoading]="loading" [nzTitle]="addOrUpldTitle" [nzContent]="modalContent" (nzOnOk)="addOrUpl(0)" (nzOnCancel)="modalVisible=false">
+        <ng-template #modalContent>
+            <form nz-form [formGroup]="formGroup">
+                <div>
+                    <nz-form-item>
+                        <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="status">状态</nz-form-label>
+                        <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                            <nz-select formControlName="status" nzId="status" [nzAllowClear]="false" [nzPlaceHolder]="'请选择状态'" [(ngModel)]="statusOption" nzShowSearch>
+                                <nz-option *ngFor="let option of statusSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                                </nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="(formGroup.get('status').dirty || formGroup.get('status').touched) && formGroup.get('status').errors">必填项！</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <input type="hidden" nz-input formControlName="id" nzId="id">
+
+                    <nz-form-item>
+                        <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="memo">备注</nz-form-label>
+                        <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                            <input nz-input formControlName="memo" placeholder="未完成备注" nzId="memo">
+                            <nz-form-explain *ngIf="(formGroup.get('memo').dirty || formGroup.get('memo').touched) && formGroup.get('memo').errors">必填项！</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+            </form>
+        </ng-template>
+    </nz-modal>
+
+    <!-- 评估modal -->
+    <nz-modal [nzVisible]="modalAssess" [nzOkLoading]="loading" [nzTitle]="addOrUpldTitle" [nzContent]="modalAssessContent" (nzOnOk)="addOrUpl(1)" (nzOnCancel)="modalAssess=false">
+        <ng-template #modalAssessContent>
+            <form nz-form [formGroup]="formGroupAssess">
+                <div>
+                    <nz-form-item>
+                        <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="assess">评估</nz-form-label>
+                        <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                            <nz-select formControlName="assess" nzId="assess" [nzAllowClear]="false" [nzPlaceHolder]="'是否通过'" [(ngModel)]="statusOption" nzShowSearch>
+                                <nz-option *ngFor="let option of statusSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                                </nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="(formGroupAssess.get('assess').dirty || formGroupAssess.get('assess').touched) && formGroupAssess.get('assess').errors">必填项！</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                    <input type="hidden" nz-input formControlName="id" nzId="id">
+                    <nz-form-item>
+                        <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="problems">问题</nz-form-label>
+                        <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                            <input nz-input formControlName="problems" placeholder="存在问题" nzId="problems">
+                            <nz-form-explain *ngIf="(formGroupAssess.get('problems').dirty || formGroupAssess.get('problems').touched) && formGroupAssess.get('problems').errors">必填项！</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+            </form>
+        </ng-template>
+    </nz-modal>
+    <nz-modal [nzVisible]="modalVisible1" [nzOkLoading]="loading" nzTitle="添加模块" [nzContent]="modalContent1" (nzOnOk)="addOrUplModule()" (nzOnCancel)="modalVisible1 = false">
+        <ng-template #modalContent1>
+            <form nz-form [formGroup]="mformGroup">
+                <nz-form-item>
+                    <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="name">项目名称</nz-form-label>
+                    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                        <nz-select formControlName="name" name="name" [nzDisabled]="isFormDisabled" (nzOpenChange)="getVersion($event)" nzId="name" [nzAllowClear]="false" [nzPlaceHolder]="'请选择项目名称'" [(ngModel)]="nameOption" nzShowSearch>
+                            <nz-option *ngFor="let option of projectnameSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="(mformGroup.get('name').dirty || mformGroup.get('name').touched) && mformGroup.get('name').errors">必填项！</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="version">版本号</nz-form-label>
+                    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                        <nz-select formControlName="version" name="version" [nzDisabled]="isFormDisabled" (nzOpenChange)="getPModule($event)" nzId="version" [nzAllowClear]="false" [nzPlaceHolder]="'请先选择版本号'" [(ngModel)]="versionOption" nzShowSearch>
+                            <nz-option *ngFor="let option of versionSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="(mformGroup.get('version').dirty || mformGroup.get('version').touched) && mformGroup.get('version').errors">必填项！</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="parent_module">父模块</nz-form-label>
+                    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                        <nz-select formControlName="parent_module" (nzOpenChange)="getSModule($event)" name="parent_module" nzId="parent_module" [nzAllowClear]="false" [nzPlaceHolder]="'请先选择父模块'" [(ngModel)]="parent_moduleOption" nzShowSearch>
+                            <nz-option *ngFor="let option of parent_moduleSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="(mformGroup.get('parent_module').dirty || mformGroup.get('parent_module').touched) && mformGroup.get('parent_module').errors">必填项！</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="submodule">子模块</nz-form-label>
+                    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                        <nz-select formControlName="submodule" name="submodule" nzId="submodule" nzMode="multiple" [nzAllowClear]="false" [nzPlaceHolder]="'请先选择子模块'" nzShowSearch>
+                            <nz-option *ngFor="let option of submoduleSlt" [nzLabel]="option.label" [nzValue]="option.value">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="(mformGroup.get('submodule').dirty || mformGroup.get('submodule').touched) && mformGroup.get('submodule').errors">必填项！</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzXs="24" nzSm="7" nzFor="uname">负责人</nz-form-label>
+                    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                        <nz-select formControlName="uname" name="uname" [nzDisabled]="isUnameDisabled" nzShowSearch nzId="uname" [nzPlaceHolder]="'请选择负责人'" [nzAllowClear]="false" [(ngModel)]="unameOption">
+                            <nz-option nzCustomContent *ngFor="let i of unameSlt" [nzLabel]="i.label" [nzValue]="i.value">
+                                <b style="font-size: 17px;">{{i.label}}</b> {{i.value}}
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzXs="24" nzSm="7" nzRequired>预计完成时间</nz-form-label>
+                    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                        <nz-date-picker formControlName="pre_time" name="pre_time" [nzAllowClear]="false" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-date-picker>
+                        <nz-form-explain *ngIf="(mformGroup.get('pre_time').dirty || mformGroup.get('pre_time').touched) && mformGroup.get('pre_time').errors">必填项！</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzXs="24" nzSm="7">描述</nz-form-label>
+                    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+                        <input nz-input formControlName="description" name="description" placeholder="请输入描述" nzId="description">
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </ng-template>
+    </nz-modal>
+</page-header>

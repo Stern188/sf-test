@@ -1,0 +1,103 @@
+{
+  "app": {
+    "name": "Self Test",
+    "description": "Ng-zorro admin panel front-end framework"
+  },
+  "user": {
+    "name": "Admin",
+    "avatar": "./assets/tmp/img/avatar.jpg",
+    "email": "cipchk@qq.com"
+  },
+  "menu": [{
+    "group": false,
+    "hideInBreadcrumb": true,
+    "children": [{
+        "text": "首页",
+        "i18n": "home",
+        "link": "/index",
+        "hideInBreadcrumb": true,
+        "reuse": false,
+        "icon": "icon-home"
+      },
+      {
+        "text": "用户管理",
+        "i18n": "menu.user-manage",
+        "link": "/user-manage/members",
+        "icon": "icon-user",
+        "reuse": false,
+        "acl": 1
+      },
+      {
+        "text": "项目管理",
+        "i18n": "menu.project-manage",
+        "link": "/project-manage/projects",
+        "icon": "anticon anticon-team",
+        "acl": [
+          1,
+          3
+        ],
+        "children": [{
+            "text": "项目管理",
+            "i18n": "menu.project-manage",
+            "link": "/project-manage/projects",
+            "reuse": false
+          },
+          {
+            "text": "版本管理",
+            "i18n": "menu.version-manage",
+            "link": "/project-manage/versions",
+            "reuse": false
+          },
+          {
+            "text": "模块管理",
+            "i18n": "menu.module-manage",
+            "link": "/project-manage/modules",
+            "reuse": false,
+            "children": [{
+                "text": "父模块管理",
+                "i18n": "menu.p-modules",
+                "link": "/project-manage/modules/parent-modules",
+                "reuse": false
+              },
+              {
+                "text": "子模块管理",
+                "i18n": "menu.submodules",
+                "link": "/project-manage/modules/submodules",
+                "reuse": false
+              }
+            ]
+          },
+          {
+            "text": "模块分配",
+            "i18n": "menu.distribution",
+            "link": "/project-manage/distribution",
+            "reuse": false
+          }
+        ]
+      },
+      {
+        "text": "系统日志",
+        "i18n": "menu.system-log",
+        "link": "/system-log/self-test-records",
+        "icon": "anticon anticon-file-text",
+        "acl": [
+          1,
+          3
+        ],
+        "children": [{
+          "text": "操作日志",
+          "i18n": "menu.operation-log",
+          "link": "/system-log/operation-log",
+          "reuse": false
+        }]
+      },
+      {
+        "text": "设置",
+        "i18n": "settings",
+        "link": "/settings",
+        "reuse": false,
+        "hide": true
+      }
+    ]
+  }]
+}

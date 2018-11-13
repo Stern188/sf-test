@@ -1,0 +1,159 @@
+{
+  "system": "Taw Test System",
+  "home": "Home",
+  "settings": "Settings",
+  "forget": "Password forget",
+  "login": "Login",
+  "logout": "Logout",
+  "leader": "Find Your Leader",
+  "fullscreen": "Fullscreen",
+  "fullscreen-exit": "Exit Fullscreen",
+  "clear-local-storage": "Clear Local Storage",
+  "language": "Language",
+  "pro-register": "Registered users",
+  "top-search-ph": "Search menu",
+  "menu":
+  {
+    "user-manage": "User manage",
+    "user-add": "User add",
+    "role-manage": "Role manage",
+    "project-manage": "project manage",
+    "version-manage": "version manage",
+    "module-manage": "module manage",
+    "system-log": "system log",
+    "self-test-records": "self test records",
+    "operation-log": "operation log",
+    "systeminfo": "System info",
+    "distribution": "Distribution",
+    "p-modules": "parent module",
+    "submodules": "submodules"
+  },
+  "btn":
+  {
+    "add": "add",
+    "modify": "modify",
+    "query": "query",
+    "reset": "reset",
+    "packup": "pack up",
+    "unfold": "unfold",
+    "operation": "operation",
+    "editor": "editor",
+    "confirm": "confirm",
+    "cancel": "cancel",
+    "delete": "delete",
+    "take-effect": "take effect",
+    "lose-efficacy": "lose efficacy"
+  },
+  "common":
+  {
+    "total": "A total of",
+    "article": "article",
+    "type": "type",
+    "describe": "describe",
+    "username": "username",
+    "email": "email",
+    "realname": "Real name",
+    "user-types": "user types",
+    "default-password": "default password",
+    "confirm-password": "Confirm Password",
+    "project-name": "project name",
+    "version-number": "version number",
+    "operating-time": "Operating time",
+    "state": "state",
+    "the-parent-module": "The parent module",
+    "the-child-module": "The child module",
+    "head": "head",
+    "estimated-time-of-completion": "Estimated time of completion",
+    "time": "time",
+    "operation-type": "Operation type",
+    "the-detailed-information": "The detailed information",
+    "host-ip": "Host IP"
+  },
+  "tip":
+  {
+    "ok-delete": "Ok, delete?",
+    "delete-success": "Delete the success",
+    "delete-fail": "Delete failed",
+    "update-success": "update successfully",
+    "update-fail": "Update failed",
+    "user-already-exists": "The user already exists",
+    "submitted-success": "Submitted successfully",
+    "submitted-fail": "Submitted failure",
+    "query-success": "The query successful",
+    "query-fail": "The query fails",
+    "fetch-data-failed": "Fetch data failed",
+    "pleas-enter-user-name": "Please enter a user name",
+    "pleas-enter-real-name": "Please enter your real name",
+    "please-select-user-type": "Please select user type",
+    "please-enter-email-address": "Please enter email address",
+    "please-enter-description": "Please enter description",
+    "please-enter-user-type": "Please enter a user type",
+    "please-enter-default-password": "Please enter default password",
+    "please-enter-your-password-again": "Please enter your password again",
+    "the-two-passwords-do-not-match": "The two passwords do not match",
+    "not-in-mailbox-format": "Not in mailbox format",
+    "please-enter-a-project-name": "Please enter a project name",
+    "please-enter-the-version-number": "Please enter the version number",
+    "please-select-the-project-name": "Please select the project name",
+    "please-select-the-version-number-first": "Please select the version number first",
+    "please-select-status": "Please select status",
+    "please-enter-the-parent-module": "Please enter the parent module",
+    "please-enter-the-submodule": "Please enter the submodule",
+    "please-select-person-in-charge": "Please select person in charge"
+  },
+
+  "plugin":
+  {
+    "add-user": "Add user",
+    "edit-user": "Edit user"
+  },
+  "user-manage":
+  {
+    "members":
+    {
+
+      "username-validation": "Contains only 2-18 characters in Chinese and English, Numbers and underscores",
+      "realname-validation": "Must be 2-4 Chinese characters",
+      "no-more-than-500-characters-at-most": "No more than 500 characters at most"
+    }
+  },
+  "project-manage":
+  {
+    "projects":
+    {
+
+      "the-project-already-exists": "The project already exists",
+      "delete-all-version-Numbers-first": "Please delete all version Numbers under this item first"
+
+    },
+    "versions":
+    {
+      "this-version-already-exists": "This version already exists",
+      "delete-all-modules-under-number-first": "Please delete all modules under this version number first",
+      "change-the-status-before-deleting": "Please change the status to invalid before deleting",
+      "template-the-person-unchanged-inheriting-the-last-version": "Template, the person in charge remains unchanged, inheriting the last valid version"
+    },
+    "module":
+    {
+      "add-more-modules": "Add more modules",
+      "remove-all-submodules-under-the-parent-module-first": "Remove all submodules under the parent module first",
+      "add-a-duplicate-module": "Add a duplicate module",
+      "a-parent-module-has-been-added": "A parent module has been added to the project. If you need to change it, edit it on the corresponding project",
+      "added-submodule-with-renaming": "Added submodule with renaming:",
+      "child-module-has-been-added-if-change-edit-parent-module": "The child module has been added to the parent module. If you need to change it, edit on the parent module",
+      "confirmation-box": "Confirmation box",
+      "whether-to-continue-to-add": "Whether to continue to add",
+      "has-been-to": "Has been to",
+      "distribution": "distribution",
+      "whether-to-continue-to-allocate": "Whether to continue to allocate",
+      "please-enter-status": "Please enter status",
+      "please-enter-operation-type": "Please enter operation type",
+      "please-enter-details": "Please enter details",
+      "please-enter-host-ip": "Please enter host IP"
+
+
+
+
+    }
+  }
+}

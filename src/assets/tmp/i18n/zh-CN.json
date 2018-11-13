@@ -1,0 +1,152 @@
+{
+  "system": "安全审计自测系统",
+  "home": "首页",
+  "settings": "设置",
+  "forget": "忘记密码",
+  "login": "登录",
+  "logout": "退出",
+  "leader": "请找领导",
+  "fullscreen": "全屏",
+  "fullscreen-exit": "退出全屏",
+  "clear-local-storage": "清理本地缓存",
+  "language": "语言",
+  "pro-register": "注册用户",
+  "top-search-ph": "搜索菜单",
+  "menu":
+  {
+    "user-manage": "用户管理",
+    "user-add": "添加用户",
+    "role-manage": "角色管理",
+    "project-manage": "项目管理",
+    "version-manage": "版本管理",
+    "module-manage": "模块管理",
+    "system-log": "系统日志",
+    "self-test-records": "我的自测记录",
+    "operation-log": "操作日志",
+    "systeminfo": "系统信息",
+    "distribution": "模块分配",
+    "p-modules": "父模块管理",
+    "submodules": "子模块管理"
+  },
+  "btn":
+  {
+    "add": "添加",
+    "modify": "修改",
+    "query": "查询",
+    "reset": "重置",
+    "packup": "收起",
+    "unfold": "展开",
+    "operation": "操作",
+    "editor": "编辑",
+    "confirm": "确定",
+    "cancel": "取消",
+    "delete": "删除",
+    "take-effect": "生效",
+    "lose-efficacy": "失效"
+  },
+  "common":
+  {
+    "total": "共",
+    "article": "条",
+    "type": "类型",
+    "describe": "描述",
+    "username": "用户名",
+    "email": "邮箱",
+    "realname": "真实姓名",
+    "user-types": "用户类型",
+    "default-password": "默认密码",
+    "confirm-password": "重复密码",
+    "project-name": "项目名称",
+    "version-number": "版本号",
+    "operating-time": "操作时间",
+    "state": "状态",
+    "the-parent-module": "父模块",
+    "the-child-module": "子模块",
+    "head": "负责人",
+    "estimated-time-of-completion": "预计完成时间",
+    "time": "时间",
+    "operation-type": "操作类型",
+    "the-detailed-information": "详细信息",
+    "host-ip": "主机IP"
+  },
+  "tip":
+  {
+    "ok-delete": "确定删除？",
+    "delete-success": "删除成功",
+    "delete-fail": "删除失败",
+    "update-success": "更新成功",
+    "update-fail": "更新失败",
+    "user-already-exists": "已存在该用户",
+    "submitted-success": "提交成功",
+    "submitted-fail": "提交失败",
+    "query-success": "查询成功",
+    "query-fail": "查询失败",
+    "fetch-data-failed": "获取数据失败",
+    "pleas-enter-user-name": "请输入用户名",
+    "pleas-enter-real-name": "请输入真实姓名",
+    "please-select-user-type": "请选择用户类型",
+    "please-enter-email-address": "请输入邮箱",
+    "please-enter-description": "请输入描述",
+    "please-enter-user-type": "请输入用户类型",
+    "please-enter-default-password": "请输入默认密码",
+    "please-enter-your-password-again": "请再次输入密码",
+    "the-two-passwords-do-not-match": "两次密码输入不一致",
+    "not-in-mailbox-format": "不符合邮箱格式",
+    "please-enter-a-project-name": "请输入项目名称",
+    "please-enter-the-version-number": "请输入版本号",
+    "please-select-the-project-name": "请选项目名称",
+    "please-select-the-version-number-first": "请先选择版本号",
+    "please-select-status": "请选择状态",
+    "please-enter-the-parent-module": "请输入父模块",
+    "please-enter-the-submodule": "请输入子模块",
+    "please-select-person-in-charge": "请选择负责人"
+  },
+  "plugin":
+  {
+    "add-user": "添加用户",
+    "edit-user": "编辑用户"
+  },
+  "user-manage":
+  {
+    "members":
+    {
+      "username-validation": "只能包含中英文、数字、下划线的2-18个字符",
+      "realname-validation": "必须为2-4个汉字",
+      "no-more-than-500-characters-at-most": "最多不能超过500字符"
+    }
+  },
+  "project-manage":
+  {
+    "projects":
+    {
+      "the-project-already-exists": "已存在该项目",
+      "delete-all-version-Numbers-first": "请先删除该项目下的所有版本号"
+    },
+    "versions":
+    {
+      "this-version-already-exists": "已存在该版本",
+      "delete-all-modules-under-number-first": "请先删除该版本号下的所有模块",
+      "change-the-status-before-deleting": "请先修改状态为失效后再删除",
+      "template-the-person-unchanged-inheriting-the-last-version": "模板、负责人不变，继承上个有效版本"
+    },
+    "module":
+    {
+      "add-more-modules": "添加更多模块",
+      "remove-all-submodules-under-the-parent-module-first": "请先删除该父模块下的所有子模块",
+      "add-a-duplicate-module": "添加的有重名模块",
+      "a-parent-module-has-been-added": "已为该项目添加父模块，如需更改，请在相应的项目上编辑",
+      "added-submodule-with-renaming": "添加的有重名子模块：",
+      "child-module-has-been-added-if-change-edit-parent-module": "已为该父模块添加子模块，如需更改，请在相应的父模块上编辑",
+      "confirmation-box": "确认框",
+      "whether-to-continue-to-add": "是否继续添加",
+      "has-been-to": "已为",
+      "distribution": "分配",
+      "whether-to-continue-to-allocate": "是否继续分配",
+      "please-enter-status": "请输入状态",
+      "please-enter-operation-type": "请输入操作类型",
+      "please-enter-details": "请输入详细信息",
+      "please-enter-host-ip": "请输入主机IP"
+
+    }
+  }
+}

@@ -1,0 +1,112 @@
+<page-header title='' home_link='/index'></page-header>
+<nz-card [nzBordered]="true">
+  <form nz-form [nzLayout]="'inline'" [formGroup]="searchGroup" (ngSubmit)="doSearch()">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8" class="mb-md">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="uname">{{'common.username'| translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <input nz-input formControlName="uname" placeholder="{{ 'tip.pleas-enter-user-name' | translate }}" nzId="uname">
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="status">{{'common.state'| translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <input nz-input formControlName="status" placeholder="{{ 'project-manage.module.please-enter-status' | translate }}" nzId="status">
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="log_type">{{'common.operation-type'| translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <input nz-input formControlName="log_type" placeholder="{{'project-manage.module.please-enter-operation-type'| translate}}" nzId="log_type">
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="info">{{'common.the-detailed-information'| translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <input nz-input formControlName="info" placeholder="{{'project-manage.module.please-enter-details'| translate}}" nzId="info">
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="operate_time">{{'common.time'| translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <nz-range-picker formControlName="operate_time" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-range-picker>
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="8" class="mb-md" *ngIf="expandForm">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label nz-col [nzSpan]="8">
+            <label for="host_ip">{{'common.host-ip'| translate}}</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <input nz-input formControlName="host_ip" placeholder="{{'project-manage.module.please-enter-host-ip'| translate}}" nzId="host_ip">
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="expandForm ? 24 : 8" class="mb-md" [class.text-right]="expandForm">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="searchloading">{{'btn.query'| translate}}</button>
+        <button nz-button type="reset" (click)="doReset()" class="mx-sm">{{'btn.reset'| translate}}</button>
+        <a (click)="expandForm=!expandForm">
+                    {{expandForm ? ('btn.packup'| translate):('btn.unfold'| translate)}}
+                    <i class="anticon" [class.anticon-down]="!expandForm" [class.anticon-up]="expandForm"></i>
+                </a>
+      </div>
+    </div>
+  </form>
+</nz-card>
+<nz-card [nzBordered]="true">
+  <nz-table #nzTable [nzData]="recordData" [nzLoading]="_loading" [nzTotal]="_total" [(nzPageIndex)]="_current" (nzPageIndexChange)="_getRecordData()" [(nzPageSize)]="_pageSize" (nzPageSizeChange)="pageSizeChange()" nzFrontPagination=false nzShowSizeChanger nzShowQuickJumper [nzShowTotal]='tblTotal'>
+    <thead nz-thead>
+      <tr>
+        <th nzShowSort (nzSortChange)="sort('uname',$event)" nzWidth="80px" nzLeft="0px">
+          {{'common.username'| translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('status',$event)" nzWidth="80px">
+          {{'common.state'| translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('log_type',$event)" nzWidth="110px">
+          {{'common.operation-type'| translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('host_ip',$event)" nzWidth="90px">
+          {{'common.host-ip'| translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('info',$event)" nzWidth="180px">
+          {{'common.the-detailed-information'| translate}}
+        </th>
+        <th nzShowSort (nzSortChange)="sort('operate_time',$event)" nzWidth="120px">
+          {{'common.time'| translate}}
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+        <td nzLeft="0px">{{data.uname}}</td>
+        <td>{{data.status}}</td>
+        <td>{{data.log_type}}</td>
+        <td>{{data.host_ip}}</td>
+        <td>{{data.info}}</td>
+        <td>{{data.operate_time}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #tblTotal>{{'common.total'| translate}} {{_total}} {{'common.article'| translate}}</ng-template>
+</nz-card>

@@ -1,0 +1,239 @@
+<div nz-row [nzGutter]="24" class="py-lg">
+    <div nz-col [nzSpan]="6">
+        <nz-card nzTitle="个人设置" class="ant-card__body-nopadding" *ngIf="!isAdmin">
+            <a (click)="active=1" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===1}">个人资料</a>
+            <a (click)="active=2" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===2}">密码安全</a>
+            <!-- <a (click)="active=3" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===3}">Emails</a>
+            <a (click)="active=4" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===4}">Notifications</a> -->
+        </nz-card>
+        <nz-card nzTitle="系统信息与设置" class="ant-card__body-nopadding" [acl]="1">
+            <a (click)="active=5" class="d-block py-sm px-md" [ngClass]="{'bg-primary-light text-white':active===5}">系统配置</a>
+        </nz-card>
+    </div>
+    <div nz-col [nzSpan]="18">
+        <nz-card nzTitle="个人资料" *ngIf="active===1">
+            <nz-row [nzGutter]="64">
+                <nz-col [nzSpan]="16">
+                    <form nz-form [formGroup]="userForm" [nzLayout]="'vertical'" (ngSubmit)="profileSave($event, userForm.value)">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="uname">用户名</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="uname" placeholder="请输入用户名" nzId='uname'>
+                                <div *ngIf="userForm.controls.uname.invalid && (userForm.controls.uname.dirty || userForm.controls.uname.touched)">
+                                    <nz-form-explain *ngIf="userForm.controls.uname.errors.required">必填项</nz-form-explain>
+                                    <nz-form-explain *ngIf="userForm.controls.uname.errors.pattern">只能包含中英文、数字、下划线的2-18个字符</nz-form-explain>
+                                </div>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="rname">真实姓名</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="rname" placeholder="请输入真实姓名" nzId='rname'>
+                                <div *ngIf="userForm.controls.rname.invalid && (userForm.controls.rname.dirty || userForm.controls.rname.touched)">
+                                    <nz-form-explain *ngIf="userForm.controls.rname.errors.required">必填项</nz-form-explain>
+                                    <nz-form-explain *ngIf="userForm.controls.rname.errors.pattern">必须为2-4个汉字</nz-form-explain>
+                                </div>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="email">邮箱</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="email" placeholder="请输入邮箱" nzId='email'>
+                                <div *ngIf="userForm.controls.email.invalid && (userForm.controls.email.dirty || userForm.controls.email.touched)">
+                                    <nz-form-explain *ngIf="userForm.controls.email.errors.required">必填项</nz-form-explain>
+                                    <nz-form-explain *ngIf="userForm.controls.email.errors.pattern">不符合邮箱格式</nz-form-explain>
+                                </div>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label nzFor="comment">描述</nz-form-label>
+                            <nz-form-control>
+                                <textarea nz-input formControlName="comment" placeholder="请输入描述" nzId='comment' nzRows='4'></textarea>
+                                <nz-form-explain>最多不能超过500字符.</nz-form-explain>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </form>
+                </nz-col>
+                <nz-col [nzSpan]="8">
+                    <div *ngFor="let img of imgSrc" class="col">
+                        <img class="img-fluid" [src]="img">
+                    </div>
+                    <label>支持JPG、PNG、GIF格式，小于2MB</label>
+                    <div class="mb-lg">
+                        <ngx-img #img (onSelect)="onSelect($event,img)" [text]="{button:'选择图片',reset:'X',default:'拖放图片'}" [config]="{ crop: [ { ratio: 1, viewMode: 0 } ], quality: 0.8,height: '230px' }"></ngx-img>
+                    </div>
+                    <div class="text-center">
+                        <button nz-button [nzType]="'primary'" (click)="_saveImg()">保存头像</button>
+                    </div>
+                </nz-col>
+            </nz-row>
+        </nz-card>
+        <nz-card nzTitle="密码安全" *ngIf="active===2">
+            <nz-row [nzGutter]="64">
+                <nz-col [nzSpan]="16">
+                    <form nz-form [formGroup]="formGroup" [nzLayout]="'vertical'">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="old_pwd">原始密码</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                                    <input nz-input type="password" formControlName="old_pwd" placeholder="请输入原始密码" nzId='old_pwd'>
+                                </nz-input-group>
+                                <nz-form-explain *ngIf="formGroup.controls.old_pwd.dirty&&formGroup.controls.old_pwd.hasError('required')">请输入原始密码</nz-form-explain>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="new_pwd">新密码</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                                    <input nz-input type="password" (ngModelChange)="updatePwdValidator()" formControlName="new_pwd" placeholder="请输入新密码" nzId='new_pwd'>
+                                </nz-input-group>
+                                <nz-form-explain *ngIf="formGroup.controls.new_pwd.dirty&&formGroup.controls.new_pwd.hasError('required')">请输入新密码</nz-form-explain>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="repeat_pwd">确认新密码</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                                    <input nz-input type="password" formControlName="repeat_pwd" placeholder="重复输入新密码" nzId='repeat_pwd'>
+                                </nz-input-group>
+                                <nz-form-explain *ngIf="formGroup.controls.repeat_pwd.dirty&&formGroup.controls.repeat_pwd.hasError('required')">请重复输入新密码</nz-form-explain>
+                                <nz-form-explain *ngIf="formGroup.controls.repeat_pwd.dirty&&formGroup.controls.repeat_pwd.hasError('a')">两次密码输入不一致</nz-form-explain>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control>
+                                <button nz-button (click)="editPassword()" [nzType]="'primary'">提交</button>
+                                <!-- <a class="pl-sm" [routerLink]="['/pages/forget']">忘记旧密码</a> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </form>
+                </nz-col>
+            </nz-row>
+        </nz-card>
+        <nz-card nzTitle="Email" *ngIf="active===3">
+            <div class="list-group">
+                <div nz-row class="list-group-item py-md" [nzType]="'flex'" [nzJustify]="'center'" [nzAlign]="'middle'">
+                    <div nz-col [nzSpan]="12">
+                        cipchk@qq.com
+                        <nz-tooltip [nzTitle]="'This email will be used for account-related notifications (e.g. account changes, password resets, billing receipts) as well as any web-based GitHub operations (e.g. edits and merges).'">
+                            <span nz-tooltip>
+                                <nz-tag [nzColor]="'#28a745'">Primary</nz-tag>
+                            </span>
+                        </nz-tooltip>
+                        <nz-tooltip [nzTitle]="'This email will be used as the \'from\' address for web-based GitHub operations.'">
+                            <span nz-tooltip>
+                                <nz-tag [nzColor]="'#959da5'">Public</nz-tag>
+                            </span>
+                        </nz-tooltip>
+                    </div>
+                    <div nz-col [nzSpan]="12" class="text-right">
+                        <i class="anticon anticon-delete text-lg"></i>
+                    </div>
+                </div>
+            </div>
+            <h4 class="pt-md mb-sm">Add email address</h4>
+            <input nz-input style="width: 200px">
+            <button nz-button (click)="msg.info('add')">
+                <span>Add</span>
+            </button>
+            <h4 class="border-top-1 py-md mt-md">Primary email address</h4>
+            <p class="mb-md">cipchk@qq.com will be used for account-related notifications and for web-based GitHub operations (e.g. edits and merges).</p>
+            <nz-select [(ngModel)]="primary_email">
+                <nz-option [nzLabel]="'cipchk@qq.com'" [nzValue]="'cipchk@qq.com'"></nz-option>
+            </nz-select>
+            <button nz-button (click)="msg.info('save')">
+                <span>Save</span>
+            </button>
+        </nz-card>
+        <nz-card nzTitle="Notifications" *ngIf="active===4">
+            <p class="pb-md">Choose how you receive notifications. These notification settings apply to the repositories you’re watching.</p>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <h4>Automatically watch repositories</h4>
+                    <p class="py-sm">When you’re given push access to a repository, automatically receive notifications for it.</p>
+                    <label nz-checkbox [ngModel]="true">
+                        <span>Automatically watch</span>
+                    </label>
+                </div>
+                <div class="list-group-item">
+                    <h4>Participating</h4>
+                    <p class="py-sm">Notifications for the conversations you are participating in, or if someone cites you with an @mention.</p>
+                    <label nz-checkbox [ngModel]="true">
+                        <span>Email</span>
+                    </label>
+                    <label nz-checkbox [ngModel]="true">
+                        <span>Web</span>
+                    </label>
+                </div>
+                <div class="list-group-item">
+                    <h4>Watching</h4>
+                    <p class="py-sm">Notifications for all repositories or conversations you’re watching.</p>
+                    <label nz-checkbox [ngModel]="true">
+                        <span>Email</span>
+                    </label>
+                    <label nz-checkbox [ngModel]="true">
+                        <span>Web</span>
+                    </label>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="系统配置" *ngIf="active===5">
+            <nz-row [nzGutter]="64">
+                <nz-col [nzSpan]="16">
+                    <desc-list class="mb-lg mg-lt32">
+                        <desc-list-item term="产品名称">自测系统</desc-list-item>
+                        <desc-list-item term="操作系统">Linux</desc-list-item>
+                        <desc-list-item term="运行时间">{{info.uptime}}</desc-list-item>
+                    </desc-list>
+                    <form nz-form [formGroup]="timeForm" [nzLayout]="'vertical'">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="timezone">时区</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="timezone" [nzPlaceHolder]="''" [nzShowSearch]="true">
+                                    <nz-option *ngFor="let i of timezoneslt" [nzLabel]="i.label" [nzValue]='i.value'></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="time_set_type">配置类型</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="time_set_type" [(ngModel)]="typeOption" [nzPlaceHolder]="''" [nzShowSearch]="true">
+                                    <nz-option *ngFor="let i of timeSetTypeSlt" [nzLabel]="i.label" [nzValue]="i.value"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item *ngIf="typeOption===1">
+                            <nz-form-label nzRequired nzFor="time">选择时间</nz-form-label>
+                            <nz-form-control>
+                                <nz-date-picker class="test" formControlName="time" nzShowTime [nzPlaceHolder]="'请选择时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item *ngIf="typeOption===2">
+                            <nz-form-label nzRequired nzFor="local_time">本地时间</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="local_time" [(ngModel)]="localTimeOption" readonly placeholder="">
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="web_time">超时时间(秒)&nbsp;&nbsp;
+                                <nz-tooltip [nzTitle]="'0代表永不超时'">
+                                    <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+                                </nz-tooltip>
+                            </nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="web_time" placeholder="请输入超时时间">
+                                <nz-form-explain *ngIf="(timeForm.controls.web_time.dirty || timeForm.controls.web_time.touched) && timeForm.controls.web_time.errors?.required">必填项！</nz-form-explain>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control>
+                                <button nz-button (click)="timeSave()" [nzType]="'primary'">提交</button>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </form>
+                </nz-col>
+            </nz-row>
+        </nz-card>
+    </div>
+</div>
